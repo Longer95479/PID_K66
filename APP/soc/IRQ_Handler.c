@@ -93,12 +93,13 @@ void PIT0_IRQHandler()
     
     uint16_t count = TPM1->CNT;
     TPM1->CNT = 0;
-    ANO_DT_send_int16((short)((count * 50 / 520.0) * 100), 0, 0, 0, 0, 0, 0, 0);
     
     float rps = count * 50 / 520.0;
     
-    //通过 UART3传输 修正后的转速 给 stm32
     rps = PID_realize(3.0);
+    ANO_DT_send_int16((short)((count * 50 / 520.0) * 100), (short)(rps * 100), 0, 0, 0, 0, 0, 0);
+    
+    //通过 UART3传输 修正后的转速 给 stm32
     uint8_t buffer[1] = {(char)(rps * 100)};
     UART_PutBuff(UART3, buffer, 1);
     
