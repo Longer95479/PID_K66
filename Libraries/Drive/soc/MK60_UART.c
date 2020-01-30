@@ -40,6 +40,17 @@ int fputc(int ch, FILE *f)
     UART_D_REG(UARTN[4]) = (uint8)ch;
 	return ch;
 }
+
+//重定义fgetc函数  使用串口4作为scanf的打印口
+int fgetc(FILE *f)
+{ 	
+     /* 等待接收满了 */
+    while (!(UART_S1_REG(UART4) & UART_S1_RDRF_MASK));    
+
+    /* 获取接收到的8位数据 */
+    return UART_D_REG(UART4);
+
+}
 #endif 
 
 

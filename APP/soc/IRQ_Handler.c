@@ -86,13 +86,21 @@ extern volatile uint8_t pit3_test_flag;
 【返 回 值】无
 【注意事项】注意进入后要清除中断标志位
 ----------------------------------------------------------------*/
+extern uint8_t flag;
 void PIT0_IRQHandler()
 {
     PIT_Flag_Clear(PIT0);       //清中断标志位
     
     uint16_t count = TPM1->CNT;
     TPM1->CNT = 0;
-    printf("rps = %f\n", (float)(count * 50 / 520.0)); 
+    ANO_DT_send_int16((short)((count * 50 / 520.0) * 100), 0, 0, 0, 0, 0, 0, 0);
+    
+    float rps = count * 50 / 520.0;
+    
+    //通过 UART3传输 修正后的转速 给 stm32
+    rps = PID_realize(rps);
+    uint8_t buffer[1] = {(char)(rps * 100)};
+    UART_PutBuff(UART3, buffer, 1);
     
     pit0_test_flag = 1;
 }
@@ -173,8 +181,36 @@ void UART4_RX_TX_IRQHandler(void)
 {
     if(UART4_S1 & UART_S1_RDRF_MASK)                                     //接收数据寄存器满
     {
+      
+        LED_ON(1);
+        delayms(100);
+        
+        float kp, ki, kd;
+        char buffer[12];
+        scanf("%s", buffer);
         //用户需要处理接收数据
-        printf("接收到字符： %c \n", UART_GetChar(UART4));
+        
+        for(int i = 0; i < 4; i++) {
+         kp += (buffer[i] - '0') * pow(10, 3 - i);
+        }
+        kp /= 100;
+        
+        for(int i = 4; i < 8; i++) {
+         ki += (buffer[i] - '0') * pow(10, 7 - i);
+        }
+        ki /= 100;
+        
+        for(int i = 8; i < 12; i++) {
+         kd += (buffer[i] - '0') * pow(10, 11 - i);
+        }
+        kd /= 100;
+        
+        printf("kp = %.2f, ki = %.2f, kd = %.2f \n", kp, ki, kd);
+        
+        printf("temp = %s\n", buffer);
+       
+        LED_OFF(1);
+        delayms(100);
     }
     
 }

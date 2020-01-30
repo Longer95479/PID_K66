@@ -2443,6 +2443,9 @@
         <file>
             <name>$PROJ_DIR$\..\Board\soc\LQ_WDOG.c</name>
         </file>
+        <file>
+            <name>$PROJ_DIR$\..\Board\soc\PID.c</name>
+        </file>
     </group>
     <group>
         <name>CMSIS</name>

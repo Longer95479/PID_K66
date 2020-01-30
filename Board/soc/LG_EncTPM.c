@@ -62,7 +62,7 @@ void Enc_TPM12_Init(void)
   
 void PIT_Init_For_IT(PITn pitn, uint32_t ms)
 {
-    NVIC_SetPriority(PIT0_IRQn,NVIC_EncodePriority(NVIC_GetPriorityGrouping(),1,2));
+    NVIC_SetPriority(PIT0_IRQn,NVIC_EncodePriority(NVIC_GetPriorityGrouping(),2,2));
     NVIC_EnableIRQ(PIT0_IRQn);
     PIT_Init(pitn, ms);
 }

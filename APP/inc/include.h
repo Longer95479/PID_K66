@@ -54,7 +54,8 @@
 #include "LQ_CCD.h"                /* CCD         例子 */
 #include "LQ_Ultrasonic.h"         /* 超声波测距  例子 */
 #include "ANO_DT.h"
-  
+#include "PID.h" 
+
 /* 在OLED 上显示或者在TFT1.8显示 */
 #define LQ_OLED     
 //#define LQ_TFT1_8       
