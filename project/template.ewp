@@ -347,9 +347,9 @@
                 <option>
                     <name>CCIncludePath2</name>
                     <state>$PROJ_DIR$\..\APP\inc</state>
-                    <state>$PROJ_DIR$\..\Board\inc</state>
                     <state>$PROJ_DIR$\..\CMSIS\Libs</state>
                     <state>$PROJ_DIR$\..\Libraries\Drive\inc</state>
+                    <state>$PROJ_DIR$\..\Board\inc</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>

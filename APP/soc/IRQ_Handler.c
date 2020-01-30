@@ -177,6 +177,7 @@ void DMA4_IRQHandler(void)
 【返 回 值】无
 【注意事项】注意进入后要清除中断标志位
 ----------------------------------------------------------------*/
+extern _pid pid;
 void UART4_RX_TX_IRQHandler(void)
 {
     if(UART4_S1 & UART_S1_RDRF_MASK)                                     //接收数据寄存器满
@@ -185,29 +186,29 @@ void UART4_RX_TX_IRQHandler(void)
         LED_ON(1);
         delayms(100);
         
-        float kp, ki, kd;
         char buffer[12];
         scanf("%s", buffer);
-        //用户需要处理接收数据
+        
+        pid.Kp = 0;
+        pid.Ki = 0;
+        pid.Kd = 0;
         
         for(int i = 0; i < 4; i++) {
-         kp += (buffer[i] - '0') * pow(10, 3 - i);
+         pid.Kp += (buffer[i] - '0') * pow(10, 3 - i);
         }
-        kp /= 100;
+        pid.Kp /= 100;
         
         for(int i = 4; i < 8; i++) {
-         ki += (buffer[i] - '0') * pow(10, 7 - i);
+         pid.Ki += (buffer[i] - '0') * pow(10, 7 - i);
         }
-        ki /= 100;
+        pid.Ki /= 100;
         
         for(int i = 8; i < 12; i++) {
-         kd += (buffer[i] - '0') * pow(10, 11 - i);
+         pid.Kd += (buffer[i] - '0') * pow(10, 11 - i);
         }
-        kd /= 100;
+        pid.Kd /= 100;
         
-        printf("kp = %.2f, ki = %.2f, kd = %.2f \n", kp, ki, kd);
-        
-        printf("temp = %s\n", buffer);
+        printf("kp = %.2f, ki = %.2f, kd = %.2f \n", pid.Kp, pid.Ki, pid.Kd);
        
         LED_OFF(1);
         delayms(100);

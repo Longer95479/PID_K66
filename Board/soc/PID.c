@@ -1,19 +1,10 @@
 #include "include.h"
 #include "PID.h"
 
-typedef struct { 
-    float SetSpeed; //定义设定值 
-    float ActualSpeed; //定义实际值 
-    float err; //定义偏差值 
-    float err_next; //定义上一个偏差值 
-    float err_last; //定义上一个偏差值 
-    float Kp,Ki,Kd; //定义比例、积分、微分系数
-} _pid;
-
 _pid pid;
 
 void PID_init(void){ 
-  pid.SetSpeed = 0.0; 
+  pid.SetSpeed = 2.0;   //2.0 rps 
   pid.ActualSpeed = 0.0; 
   pid.err = 0.0; 
   pid.err_last = 0.0; 

@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "D:\Longer\IAR_ARM\common\bin\cspybat" -f "D:\Longer\智能车赛\my_programs\速度波形显示_K66\project\settings\template.Debug.general.xcl" --backend -f "D:\Longer\智能车赛\my_programs\速度波形显示_K66\project\settings\template.Debug.driver.xcl" 
+& "D:\Longer\IAR_ARM\common\bin\cspybat" -f "D:\Longer\智能车赛\my_programs\PID_K66_master\project\settings\template.Debug.general.xcl" --backend -f "D:\Longer\智能车赛\my_programs\PID_K66_master\project\settings\template.Debug.driver.xcl" 
 }
 else
 {
-& "D:\Longer\IAR_ARM\common\bin\cspybat" -f "D:\Longer\智能车赛\my_programs\速度波形显示_K66\project\settings\template.Debug.general.xcl" --debug_file=$debugfile --backend -f "D:\Longer\智能车赛\my_programs\速度波形显示_K66\project\settings\template.Debug.driver.xcl" 
+& "D:\Longer\IAR_ARM\common\bin\cspybat" -f "D:\Longer\智能车赛\my_programs\PID_K66_master\project\settings\template.Debug.general.xcl" --debug_file=$debugfile --backend -f "D:\Longer\智能车赛\my_programs\PID_K66_master\project\settings\template.Debug.driver.xcl" 
 }
