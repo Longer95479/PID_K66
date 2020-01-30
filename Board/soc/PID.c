@@ -4,7 +4,7 @@
 _pid pid;
 
 void PID_init(void){ 
-  pid.SetSpeed = 2.0;   //2.0 rps 
+  pid.SetSpeed = 0.0; 
   pid.ActualSpeed = 0.0; 
   pid.err = 0.0; 
   pid.err_last = 0.0; 

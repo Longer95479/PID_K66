@@ -98,7 +98,7 @@ void PIT0_IRQHandler()
     float rps = count * 50 / 520.0;
     
     //通过 UART3传输 修正后的转速 给 stm32
-    rps = PID_realize(rps);
+    rps = PID_realize(3.0);
     uint8_t buffer[1] = {(char)(rps * 100)};
     UART_PutBuff(UART3, buffer, 1);
     
