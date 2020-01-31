@@ -88,7 +88,7 @@ extern volatile uint8_t pit3_test_flag;
 【返 回 值】无
 【注意事项】注意进入后要清除中断标志位
 ----------------------------------------------------------------*/
-extern uint8_t flag;
+extern uint8_t dir_flag = 1;    //默认计数器递增
 void PIT0_IRQHandler()
 {
     PIT_Flag_Clear(PIT0);       //清中断标志位
@@ -96,9 +96,26 @@ void PIT0_IRQHandler()
     uint16_t count = TPM1->CNT;
     TPM1->CNT = 0;
     
+    //检测计数方向，以此确定转向
+    //if (!(TPM1_QDCTRL & TPM_QDCTRL_QUADIR_MASK))  //检测标志位不稳定，会有毛刺出现
+    if (count > 200) {
+      count = 65535 - count;
+      dir_flag = 0;     //计数器递减
+    }
+        
     float rps = count * 50 / 520.0;
+    
+    //检测计数器计数方向，以此确定是否加负号
+    if (dir_flag == 0) {
+      rps = -rps;
+      dir_flag = 1;
+    }
+    
+    //进行波形调整，并返回修正值
     pid.ActualSpeed = rps;
-    float rps_sd = PID_realize(4.0);
+    float rps_sd = PID_realize(pid.SetSpeed);
+    
+    //显示波形
     ANO_DT_send_int16((short)(rps * 100), (short)(rps_sd * 100), 0, 0, 0, 0, 0, 0);
     
     //通过 UART3传输 修正后的转速 给 stm32
@@ -189,12 +206,13 @@ void UART4_RX_TX_IRQHandler(void)
         LED_ON(1);
         delayms(100);
         
-        char buffer[12];
+        char buffer[16];
         scanf("%s", buffer);
         
         pid.Kp = 0;
         pid.Ki = 0;
         pid.Kd = 0;
+        pid.SetSpeed = 0;
         
         for(int i = 0; i < 4; i++) {
          pid.Kp += (buffer[i] - '0') * pow(10, 3 - i);
@@ -211,7 +229,12 @@ void UART4_RX_TX_IRQHandler(void)
         }
         pid.Kd /= 100;
         
-        printf("kp = %.2f, ki = %.2f, kd = %.2f \n", pid.Kp, pid.Ki, pid.Kd);
+        for(int i = 13; i < 16; i++) {
+         pid.SetSpeed += (buffer[i] - '0') * pow(10, 15 - i);
+        }
+        pid.SetSpeed /= 100;
+        
+        printf("kp = %.2f, ki = %.2f, kd = %.2f, SetSpeed = %.2f \n", pid.Kp, pid.Ki, pid.Kd, pid.SetSpeed);
               
         LED_OFF(1);
         delayms(100);
