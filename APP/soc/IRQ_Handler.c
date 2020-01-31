@@ -98,11 +98,11 @@ void PIT0_IRQHandler()
     
     float rps = count * 50 / 520.0;
     pid.ActualSpeed = rps;
-    float rps_sd = PID_realize(2.0);
+    float rps_sd = PID_realize(4.0);
     ANO_DT_send_int16((short)(rps * 100), (short)(rps_sd * 100), 0, 0, 0, 0, 0, 0);
     
     //通过 UART3传输 修正后的转速 给 stm32
-    int16_t data = (int16_t)rps_sd;
+    int16_t data = (int16_t)(rps_sd * 100);
     uint8_t buffer[4] = {0xAA, BYTE0(data), BYTE1(data), 0x11};
     UART_PutBuff(UART3, buffer, 4);
     
