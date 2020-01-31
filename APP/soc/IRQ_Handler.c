@@ -12,6 +12,8 @@
 ----------------------------------------------------------------*/
 #include "include.h"
 extern _pid pid;
+#define BYTE0(dwTemp)       ( *( (char *)(&dwTemp)    ) )
+#define BYTE1(dwTemp)       ( *( (char *)(&dwTemp) + 1) )
 
 /////////////////////////////////////////////////////////////////
 ///////////////GPIO中断服务函数//////////////////////////////////
@@ -96,12 +98,13 @@ void PIT0_IRQHandler()
     
     float rps = count * 50 / 520.0;
     pid.ActualSpeed = rps;
-    float rps_sd = PID_realize(5.0);
+    float rps_sd = PID_realize(2.0);
     ANO_DT_send_int16((short)(rps * 100), (short)(rps_sd * 100), 0, 0, 0, 0, 0, 0);
     
     //通过 UART3传输 修正后的转速 给 stm32
-    uint8_t buffer[1] = {(char)(rps_sd * 100)};
-    UART_PutBuff(UART3, buffer, 1);
+    int16_t data = (int16_t)rps_sd;
+    uint8_t buffer[4] = {0xAA, BYTE0(data), BYTE1(data), 0x11};
+    UART_PutBuff(UART3, buffer, 4);
     
     pit0_test_flag = 1;
 }
@@ -177,7 +180,7 @@ void DMA4_IRQHandler(void)
 【参    数】无
 【返 回 值】无
 【注意事项】注意进入后要清除中断标志位
-----------------------------------------------------------------*/
+----------------------------------------------------------------*/  
 void UART4_RX_TX_IRQHandler(void)
 {
     if(UART4_S1 & UART_S1_RDRF_MASK)                                     //接收数据寄存器满
@@ -209,7 +212,7 @@ void UART4_RX_TX_IRQHandler(void)
         pid.Kd /= 100;
         
         printf("kp = %.2f, ki = %.2f, kd = %.2f \n", pid.Kp, pid.Ki, pid.Kd);
-       
+              
         LED_OFF(1);
         delayms(100);
     }
