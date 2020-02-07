@@ -33,10 +33,10 @@
     <StLinkDriver>
         <stlinkserialNo>35580287</stlinkserialNo>
         <stlinkfoundProbes />
-        <CStepIntDis>_ 0</CStepIntDis>
-        <LeaveTargetRunning>_ 0</LeaveTargetRunning>
         <stlinkResetStyle>0</stlinkResetStyle>
         <stlinkResetStrategy>0</stlinkResetStrategy>
+        <CStepIntDis>_ 0</CStepIntDis>
+        <LeaveTargetRunning>_ 0</LeaveTargetRunning>
     </StLinkDriver>
     <DebugChecksum>
         <Checksum>3755139710</Checksum>
@@ -73,6 +73,9 @@
         <ITMportsLogFile>0</ITMportsLogFile>
         <ITMlogFile>$PROJ_DIR$\ITM.log</ITMlogFile>
     </SWOTraceHWSettings>
+    <Registers>
+        <regBase0>MCG_S 2</regBase0>
+    </Registers>
     <Trace2>
         <Enabled>0</Enabled>
         <ShowSource>0</ShowSource>
@@ -118,12 +121,6 @@
         <ShowTimeSum>1</ShowTimeSum>
         <SumSortOrder>0</SumSortOrder>
     </EventLog>
-    <DisassembleMode>
-        <mode>0</mode>
-    </DisassembleMode>
-    <Breakpoints2>
-        <Count>0</Count>
-    </Breakpoints2>
     <TermIOLog>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -133,12 +130,6 @@
         <LogFile>_ ""</LogFile>
         <Category>_ 0</Category>
     </LogFile>
-    <Aliases>
-        <A0>_ "D:\Longer\智能车赛\my_programs\速度波形显示_K66\CMSIS\Startup\startup_MK66F18.s" "D:\Longer\智能车赛\my_programs\PID_K66_master\CMSIS\Startup\startup_MK66F18.s"</A0>
-        <A1>_ "D:\Longer\智能车赛\my_programs\速度波形显示_K66\Libraries\Drive\soc\MK60_PLL.c" "D:\Longer\智能车赛\my_programs\PID_K66_master\Libraries\Drive\soc\MK60_PLL.c"</A1>
-        <Count>2</Count>
-        <SuppressDialog>0</SuppressDialog>
-    </Aliases>
     <DriverProfiling>
         <Enabled>0</Enabled>
         <Mode>3</Mode>
@@ -152,4 +143,16 @@
     <CallStackStripe>
         <ShowTiming>1</ShowTiming>
     </CallStackStripe>
+    <DisassembleMode>
+        <mode>0</mode>
+    </DisassembleMode>
+    <Breakpoints2>
+        <Count>0</Count>
+    </Breakpoints2>
+    <Aliases>
+        <A0>_ "D:\Longer\智能车赛\my_programs\速度波形显示_K66\CMSIS\Startup\startup_MK66F18.s" "D:\Longer\智能车赛\my_programs\PID_K66_master\CMSIS\Startup\startup_MK66F18.s"</A0>
+        <A1>_ "D:\Longer\智能车赛\my_programs\速度波形显示_K66\Libraries\Drive\soc\MK60_PLL.c" "D:\Longer\智能车赛\my_programs\PID_K66_master\Libraries\Drive\soc\MK60_PLL.c"</A1>
+        <Count>2</Count>
+        <SuppressDialog>0</SuppressDialog>
+    </Aliases>
 </settings>
